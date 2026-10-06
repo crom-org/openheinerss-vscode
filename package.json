@@ -28,8 +28,14 @@
     "agent"
   ],
   "main": "./dist/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onView:openheinerss.chatView"
   ],
   "contributes": {
     "commands": [
