@@ -1,0 +1,120 @@
+{
+  "name": "openheinerss",
+  "displayName": "Openheinerss AI Maestro",
+  "description": "Universal AI Coding Agent Orchestrator for VS Code (Claude Code, OpenCode, Aider, Codex, AGY)",
+  "version": "0.1.0",
+  "publisher": "crom-org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crom-org/openheinerss-vscode.git"
+  },
+  "icon": "resources/logo.jpg",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "openheinerss",
+    "claude-code",
+    "opencode",
+    "aider",
+    "codex",
+    "mcp",
+    "orchestrator",
+    "agent"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "openheinerss.start",
+        "title": "Openheinerss: Iniciar Sessão de Agente",
+        "icon": "$(play)"
+      },
+      {
+        "command": "openheinerss.stop",
+        "title": "Openheinerss: Encerrar Sessão Ativa",
+        "icon": "$(stop)"
+      },
+      {
+        "command": "openheinerss.selectHarness",
+        "title": "Openheinerss: Trocar Motor (Harness)",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "openheinerss.doctor",
+        "title": "Openheinerss: Diagnóstico de Ambiente",
+        "icon": "$(heart)"
+      },
+      {
+        "command": "openheinerss.focusChat",
+        "title": "Openheinerss: Abrir Chat Maestro",
+        "icon": "$(comment-discussion)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "openheinerss-sidebar",
+          "title": "Openheinerss Maestro",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "openheinerss-sidebar": [
+        {
+          "type": "webview",
+          "id": "openheinerss.chatView",
+          "name": "Maestro Chat"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Openheinerss",
+      "properties": {
+        "openheinerss.binaryPath": {
+          "type": "string",
+          "default": "openheinerss",
+          "description": "Caminho absoluto para o binário do Openheinerss (ou nome caso esteja no PATH)"
+        },
+        "openheinerss.defaultHarness": {
+          "type": "string",
+          "default": "claude-code",
+          "enum": ["mock", "claude-code", "opencode", "codex", "agy", "aider"],
+          "description": "Harness padrão para novas sessões de agente"
+        },
+        "openheinerss.defaultModel": {
+          "type": "string",
+          "default": "",
+          "description": "Modelo padrão a ser utilizado pelo motor selecionado"
+        },
+        "openheinerss.permissionMode": {
+          "type": "string",
+          "default": "prompt",
+          "enum": ["prompt", "auto_allow", "deny"],
+          "description": "Modo de autorização de permissões para comandos arriscados"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.2",
+    "typescript": "^5.4.5"
+  }
+}
