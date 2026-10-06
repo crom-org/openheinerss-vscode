@@ -21,15 +21,19 @@ export function activate(context: vscode.ExtensionContext) {
   statusBarItem.show();
   context.subscriptions.push(statusBarItem);
 
+  let currentHarness: string | null = null;
+
   // Sidebar Provider
   const sidebarProvider = new ChatSidebarProvider(context.extensionUri, async (text, harness, model) => {
     try {
       statusBarItem.text = "$(sync~spin) Openheinerss: Pensando...";
 
+      const targetHarness = harness || config.get<string>("defaultHarness") || "claude-code";
+
       // Se não há sessão aberta ou mudou o harness, cria nova sessão
-      if (!currentSessionId) {
+      if (!currentSessionId || currentHarness !== targetHarness) {
         const createRes = await client!.sendRequest("session.create", {
-          harness: harness || config.get<string>("defaultHarness") || "claude-code",
+          harness: targetHarness,
           model: model || config.get<string>("defaultModel") || undefined,
           cwd: cwd,
           options: {
@@ -37,6 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
           },
         });
         currentSessionId = createRes.sessionId;
+        currentHarness = targetHarness;
       }
 
       await client!.sendRequest("session.prompt", {
